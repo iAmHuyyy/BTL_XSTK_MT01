@@ -31,5 +31,5 @@ median_speed <- median(new_DF$Core_Speed, na.rm = TRUE)
 new_DF$Core_Speed <- ifelse(is.na(new_DF$Core_Speed), median_speed, new_DF$Core_Speed)
 
 median_process <- median(new_DF$Process, na.rm = TRUE)
-new_DF$Process <- ifelse(is.na(new_DF$Process), median_memoryBus, new_DF$Process)
+new_DF$Process <- ifelse(is.na(new_DF$Process), median_process, new_DF$Process)
 apply(is.na(new_DF),2,sum)
