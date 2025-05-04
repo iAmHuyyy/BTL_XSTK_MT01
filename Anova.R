@@ -119,7 +119,7 @@ new_DF$Memory <- ifelse(is.na(new_DF$Memory), median_memory,new_DF$Memory)
 median_speed <- median(new_DF$Core_Speed, na.rm = TRUE)
 new_DF$Core_Speed <- ifelse(is.na(new_DF$Core_Speed), median_speed, new_DF$Core_Speed)
 median_process <- median(new_DF$Process, na.rm = TRUE)
-new_DF$Process <- ifelse(is.na(new_DF$Process), median_memoryBus, new_DF$Process)
+new_DF$Process <- ifelse(is.na(new_DF$Process), median_process, new_DF$Process)
 apply(is.na(new_DF),2,sum)
 print(Manufacturer_table <- table(new_DF$Manufacturer))
 #Lọc dữ liệu với số lượng quan sát theo tên nhiều hơn 200
