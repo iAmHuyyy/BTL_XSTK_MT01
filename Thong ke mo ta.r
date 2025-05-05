@@ -1,5 +1,5 @@
 setwd("C:/R/test")
-readFile <- read.csv("ALL_GPUs.csv")
+readFile <- read.csv("/Users/nguyennhathuy/Downloads/ALL_GPUs.csv.xls")
 
 #install.packages("tidyr")
 #install.packages("dplyr")
@@ -411,7 +411,81 @@ cat("Scatter plot saved as 'scatterplot_memory_bandwidth_max_power.png' \n")
 
 
 
+########################################################
+# Tính toán IQR cho từng cột số trong new_DF
+IQR_values <- sapply(new_DF[sapply(new_DF, is.numeric)], IQR)
 
+# Tính toán giới hạn dưới (lower bounds) và giới hạn trên (upper bounds) cho các cột số
+lower_bounds <- sapply(new_DF[sapply(new_DF, is.numeric)], quantile, probs = 0.25) - 1.5 * IQR_values
+upper_bounds <- sapply(new_DF[sapply(new_DF, is.numeric)], quantile, probs = 0.75) + 1.5 * IQR_values
+
+# Xác định các điểm ngoại lai (outliers)
+outliers <- lapply(names(new_DF), function(i) {
+  if (is.numeric(new_DF[[i]])) {
+    new_DF[[i]] < lower_bounds[i] | new_DF[[i]] > upper_bounds[i]
+  } else {
+    rep(FALSE, length(new_DF[[i]]))
+  }
+})
+
+# In ra số lượng các điểm ngoại lai cho từng biến
+outlier_counts <- sapply(outliers, sum)
+print(outlier_counts)
+
+########################################################
+# Tính toán IQR cho từng cột số trong new_DF
+IQR_values <- sapply(new_DF[sapply(new_DF, is.numeric)], IQR)
+
+# Tính toán giới hạn dưới (lower bounds) và giới hạn trên (upper bounds) cho các cột số
+lower_bounds <- sapply(new_DF[sapply(new_DF, is.numeric)], quantile, probs = 0.25) - 1.5 * IQR_values
+upper_bounds <- sapply(new_DF[sapply(new_DF, is.numeric)], quantile, probs = 0.75) + 1.5 * IQR_values
+
+# Xác định các điểm ngoại lai (outliers)
+outliers <- lapply(names(new_DF), function(i) {
+  if (is.numeric(new_DF[[i]])) {
+    new_DF[[i]] < lower_bounds[i] | new_DF[[i]] > upper_bounds[i]
+  } else {
+    rep(FALSE, length(new_DF[[i]]))
+  }
+})
+
+# In ra số lượng các điểm ngoại lai cho từng biến
+outlier_counts <- sapply(outliers, sum)
+print(outlier_counts)
+
+########################################################
+# Tính toán IQR cho từng cột số trong new_DF
+IQR_values <- sapply(new_DF[sapply(new_DF, is.numeric)], IQR)
+
+# Tính toán giới hạn dưới (lower bounds) và giới hạn trên (upper bounds) cho các cột số
+lower_bounds <- sapply(new_DF[sapply(new_DF, is.numeric)], quantile, probs = 0.25) - 1.5 * IQR_values
+upper_bounds <- sapply(new_DF[sapply(new_DF, is.numeric)], quantile, probs = 0.75) + 1.5 * IQR_values
+
+# Xác định các điểm ngoại lai (outliers)
+outliers <- lapply(names(new_DF), function(i) {
+  if (is.numeric(new_DF[[i]])) {
+    new_DF[[i]] < lower_bounds[i] | new_DF[[i]] > upper_bounds[i]
+  } else {
+    rep(FALSE, length(new_DF[[i]]))
+  }
+})
+names(outliers) <- names(new_DF)
+
+# In ra số lượng các điểm ngoại lai cho từng biến
+outlier_counts <- sapply(outliers, sum)
+print(outlier_counts)
+
+# Tạo dataframe Boolean cho từng hàng: TRUE nếu hàng đó có ít nhất một ngoại lai
+outlier_matrix <- as.data.frame(outliers)
+rows_with_outliers <- apply(outlier_matrix, 1, any)
+
+# Vẽ boxplot cho tất cả các biến số trong new_DF
+boxplot(new_DF[sapply(new_DF, is.numeric)], main = "Boxplot of Numeric Variables", col = "lightblue", border = "black")
+
+# Nếu muốn vẽ boxplot riêng biệt cho từng biến
+for (col in names(new_DF[sapply(new_DF, is.numeric)])) {
+  boxplot(new_DF[[col]], main = paste("Boxplot of", col), col = "lightgreen", border = "black")
+}
 
 
 
